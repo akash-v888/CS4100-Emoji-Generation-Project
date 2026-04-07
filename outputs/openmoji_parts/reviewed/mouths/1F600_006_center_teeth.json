@@ -1,0 +1,39 @@
+{
+  "review": {
+    "keep": true,
+    "part_type": "mouths",
+    "placement": "center",
+    "descriptor": "Teeth",
+    "tags": [],
+    "note": ""
+  },
+  "stats": {
+    "source_svg": "1F600.svg",
+    "candidate_id": "1F600_006",
+    "xml_tag": "path",
+    "xml_depth": 2,
+    "auto_guess": "mouths",
+    "bbox_x1": 145,
+    "bbox_y1": 289,
+    "bbox_x2": 366,
+    "bbox_y2": 345,
+    "bbox_x1_norm": 0.283203125,
+    "bbox_y1_norm": 0.564453125,
+    "bbox_x2_norm": 0.71484375,
+    "bbox_y2_norm": 0.673828125,
+    "center_x_norm": 0.4990234375,
+    "center_y_norm": 0.619140625,
+    "width_norm": 0.43359375,
+    "height_norm": 0.111328125,
+    "area_ratio": 0.027034759521484375,
+    "aspect_ratio": 3.8947368421052633,
+    "mean_r": 0.0,
+    "mean_g": 0.0,
+    "mean_b": 0.0,
+    "dark_ratio": 1.0,
+    "saturated_ratio": 0.0,
+    "opaque_pixel_count": 7087
+  },
+  "output_svg": "outputs/openmoji_parts/reviewed/mouths/1F600_006_center_teeth.svg",
+  "output_png": "outputs/openmoji_parts/reviewed/mouths/1F600_006_center_teeth.png"
+}
