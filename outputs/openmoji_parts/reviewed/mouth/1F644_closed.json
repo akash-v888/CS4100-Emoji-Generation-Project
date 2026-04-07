@@ -1,0 +1,26 @@
+{
+  "part_type": "mouth",
+  "descriptor": "closed",
+  "info": {
+    "part_type": "mouth",
+    "descriptor": "closed",
+    "source_svg": "1F644.svg",
+    "element_indices": [
+      8
+    ],
+    "bbox_x1": 213,
+    "bbox_y1": 344,
+    "bbox_x2": 298,
+    "bbox_y2": 359,
+    "bbox_x1_norm": 0.416015625,
+    "bbox_y1_norm": 0.671875,
+    "bbox_x2_norm": 0.58203125,
+    "bbox_y2_norm": 0.701171875,
+    "center_x_norm": 0.4990234375,
+    "center_y_norm": 0.6865234375,
+    "width_norm": 0.16796875,
+    "height_norm": 0.03125
+  },
+  "output_svg": "outputs/openmoji_parts/reviewed/mouth/1F644_closed.svg",
+  "output_png": "outputs/openmoji_parts/reviewed/mouth/1F644_closed.png"
+}

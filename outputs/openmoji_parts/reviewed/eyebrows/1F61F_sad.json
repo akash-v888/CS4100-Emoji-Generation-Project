@@ -1,0 +1,27 @@
+{
+  "part_type": "eyebrows",
+  "descriptor": "sad",
+  "info": {
+    "part_type": "eyebrows",
+    "descriptor": "sad",
+    "source_svg": "1F61F.svg",
+    "element_indices": [
+      3,
+      4
+    ],
+    "bbox_x1": 145,
+    "bbox_y1": 154,
+    "bbox_x2": 366,
+    "bbox_y2": 199,
+    "bbox_x1_norm": 0.283203125,
+    "bbox_y1_norm": 0.30078125,
+    "bbox_x2_norm": 0.71484375,
+    "bbox_y2_norm": 0.388671875,
+    "center_x_norm": 0.4990234375,
+    "center_y_norm": 0.3447265625,
+    "width_norm": 0.43359375,
+    "height_norm": 0.08984375
+  },
+  "output_svg": "outputs/openmoji_parts/reviewed/eyebrows/1F61F_sad.svg",
+  "output_png": "outputs/openmoji_parts/reviewed/eyebrows/1F61F_sad.png"
+}

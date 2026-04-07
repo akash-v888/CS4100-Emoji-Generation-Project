@@ -1,0 +1,26 @@
+{
+  "part_type": "mouth",
+  "descriptor": "sad",
+  "info": {
+    "part_type": "mouth",
+    "descriptor": "sad",
+    "source_svg": "1F615.svg",
+    "element_indices": [
+      2
+    ],
+    "bbox_x1": 187,
+    "bbox_y1": 298,
+    "bbox_x2": 324,
+    "bbox_y2": 332,
+    "bbox_x1_norm": 0.365234375,
+    "bbox_y1_norm": 0.58203125,
+    "bbox_x2_norm": 0.6328125,
+    "bbox_y2_norm": 0.6484375,
+    "center_x_norm": 0.4990234375,
+    "center_y_norm": 0.615234375,
+    "width_norm": 0.26953125,
+    "height_norm": 0.068359375
+  },
+  "output_svg": "outputs/openmoji_parts/reviewed/mouth/1F615_sad.svg",
+  "output_png": "outputs/openmoji_parts/reviewed/mouth/1F615_sad.png"
+}

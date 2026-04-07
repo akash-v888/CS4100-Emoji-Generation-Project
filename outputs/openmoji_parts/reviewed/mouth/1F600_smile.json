@@ -1,0 +1,29 @@
+{
+  "part_type": "mouth",
+  "descriptor": "smile",
+  "info": {
+    "part_type": "mouth",
+    "descriptor": "smile",
+    "source_svg": "1F600.svg",
+    "element_indices": [
+      1,
+      2,
+      4,
+      5
+    ],
+    "bbox_x1": 145,
+    "bbox_y1": 289,
+    "bbox_x2": 366,
+    "bbox_y2": 386,
+    "bbox_x1_norm": 0.283203125,
+    "bbox_y1_norm": 0.564453125,
+    "bbox_x2_norm": 0.71484375,
+    "bbox_y2_norm": 0.75390625,
+    "center_x_norm": 0.4990234375,
+    "center_y_norm": 0.6591796875,
+    "width_norm": 0.43359375,
+    "height_norm": 0.19140625
+  },
+  "output_svg": "outputs/openmoji_parts/reviewed/mouth/1F600_smile.svg",
+  "output_png": "outputs/openmoji_parts/reviewed/mouth/1F600_smile.png"
+}

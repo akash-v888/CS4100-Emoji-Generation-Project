@@ -1,0 +1,28 @@
+{
+  "part_type": "mouth",
+  "descriptor": "tongue out",
+  "info": {
+    "part_type": "mouth",
+    "descriptor": "tongue out",
+    "source_svg": "1F60B.svg",
+    "element_indices": [
+      1,
+      5,
+      6
+    ],
+    "bbox_x1": 136,
+    "bbox_y1": 287,
+    "bbox_x2": 412,
+    "bbox_y2": 409,
+    "bbox_x1_norm": 0.265625,
+    "bbox_y1_norm": 0.560546875,
+    "bbox_x2_norm": 0.8046875,
+    "bbox_y2_norm": 0.798828125,
+    "center_x_norm": 0.53515625,
+    "center_y_norm": 0.6796875,
+    "width_norm": 0.541015625,
+    "height_norm": 0.240234375
+  },
+  "output_svg": "outputs/openmoji_parts/reviewed/mouth/1F60B_tongue_out.svg",
+  "output_png": "outputs/openmoji_parts/reviewed/mouth/1F60B_tongue_out.png"
+}

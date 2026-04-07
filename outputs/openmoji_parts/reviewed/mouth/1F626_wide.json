@@ -1,0 +1,26 @@
+{
+  "part_type": "mouth",
+  "descriptor": "wide",
+  "info": {
+    "part_type": "mouth",
+    "descriptor": "wide",
+    "source_svg": "1F626.svg",
+    "element_indices": [
+      2
+    ],
+    "bbox_x1": 200,
+    "bbox_y1": 284,
+    "bbox_x2": 311,
+    "bbox_y2": 342,
+    "bbox_x1_norm": 0.390625,
+    "bbox_y1_norm": 0.5546875,
+    "bbox_x2_norm": 0.607421875,
+    "bbox_y2_norm": 0.66796875,
+    "center_x_norm": 0.4990234375,
+    "center_y_norm": 0.611328125,
+    "width_norm": 0.21875,
+    "height_norm": 0.115234375
+  },
+  "output_svg": "outputs/openmoji_parts/reviewed/mouth/1F626_wide.svg",
+  "output_png": "outputs/openmoji_parts/reviewed/mouth/1F626_wide.png"
+}

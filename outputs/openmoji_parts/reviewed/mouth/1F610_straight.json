@@ -1,0 +1,26 @@
+{
+  "part_type": "mouth",
+  "descriptor": "straight",
+  "info": {
+    "part_type": "mouth",
+    "descriptor": "straight",
+    "source_svg": "1F610.svg",
+    "element_indices": [
+      2
+    ],
+    "bbox_x1": 184,
+    "bbox_y1": 298,
+    "bbox_x2": 327,
+    "bbox_y2": 312,
+    "bbox_x1_norm": 0.359375,
+    "bbox_y1_norm": 0.58203125,
+    "bbox_x2_norm": 0.638671875,
+    "bbox_y2_norm": 0.609375,
+    "center_x_norm": 0.4990234375,
+    "center_y_norm": 0.595703125,
+    "width_norm": 0.28125,
+    "height_norm": 0.029296875
+  },
+  "output_svg": "outputs/openmoji_parts/reviewed/mouth/1F610_straight.svg",
+  "output_png": "outputs/openmoji_parts/reviewed/mouth/1F610_straight.png"
+}

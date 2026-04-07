@@ -1,0 +1,26 @@
+{
+  "part_type": "mouth",
+  "descriptor": "frown",
+  "info": {
+    "part_type": "mouth",
+    "descriptor": "frown",
+    "source_svg": "1F641.svg",
+    "element_indices": [
+      4
+    ],
+    "bbox_x1": 192,
+    "bbox_y1": 291,
+    "bbox_x2": 319,
+    "bbox_y2": 334,
+    "bbox_x1_norm": 0.375,
+    "bbox_y1_norm": 0.568359375,
+    "bbox_x2_norm": 0.623046875,
+    "bbox_y2_norm": 0.65234375,
+    "center_x_norm": 0.4990234375,
+    "center_y_norm": 0.6103515625,
+    "width_norm": 0.25,
+    "height_norm": 0.0859375
+  },
+  "output_svg": "outputs/openmoji_parts/reviewed/mouth/1F641_frown.svg",
+  "output_png": "outputs/openmoji_parts/reviewed/mouth/1F641_frown.png"
+}

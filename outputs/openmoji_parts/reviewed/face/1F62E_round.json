@@ -1,0 +1,27 @@
+{
+  "part_type": "face",
+  "descriptor": "round",
+  "info": {
+    "part_type": "face",
+    "descriptor": "round",
+    "source_svg": "1F62E.svg",
+    "element_indices": [
+      0,
+      1
+    ],
+    "bbox_x1": 92,
+    "bbox_y1": 92,
+    "bbox_x2": 419,
+    "bbox_y2": 419,
+    "bbox_x1_norm": 0.1796875,
+    "bbox_y1_norm": 0.1796875,
+    "bbox_x2_norm": 0.818359375,
+    "bbox_y2_norm": 0.818359375,
+    "center_x_norm": 0.4990234375,
+    "center_y_norm": 0.4990234375,
+    "width_norm": 0.640625,
+    "height_norm": 0.640625
+  },
+  "output_svg": "outputs/openmoji_parts/reviewed/face/1F62E_round.svg",
+  "output_png": "outputs/openmoji_parts/reviewed/face/1F62E_round.png"
+}

@@ -1,0 +1,27 @@
+{
+  "part_type": "eyes",
+  "descriptor": "closed",
+  "info": {
+    "part_type": "eyes",
+    "descriptor": "closed",
+    "source_svg": "1F60B.svg",
+    "element_indices": [
+      3,
+      4
+    ],
+    "bbox_x1": 156,
+    "bbox_y1": 210,
+    "bbox_x2": 355,
+    "bbox_y2": 244,
+    "bbox_x1_norm": 0.3046875,
+    "bbox_y1_norm": 0.41015625,
+    "bbox_x2_norm": 0.693359375,
+    "bbox_y2_norm": 0.4765625,
+    "center_x_norm": 0.4990234375,
+    "center_y_norm": 0.443359375,
+    "width_norm": 0.390625,
+    "height_norm": 0.068359375
+  },
+  "output_svg": "outputs/openmoji_parts/reviewed/eyes/1F60B_closed.svg",
+  "output_png": "outputs/openmoji_parts/reviewed/eyes/1F60B_closed.png"
+}

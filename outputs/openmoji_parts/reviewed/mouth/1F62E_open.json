@@ -1,0 +1,27 @@
+{
+  "part_type": "mouth",
+  "descriptor": "open",
+  "info": {
+    "part_type": "mouth",
+    "descriptor": "open",
+    "source_svg": "1F62E.svg",
+    "element_indices": [
+      1,
+      3
+    ],
+    "bbox_x1": 208,
+    "bbox_y1": 288,
+    "bbox_x2": 303,
+    "bbox_y2": 384,
+    "bbox_x1_norm": 0.40625,
+    "bbox_y1_norm": 0.5625,
+    "bbox_x2_norm": 0.591796875,
+    "bbox_y2_norm": 0.75,
+    "center_x_norm": 0.4990234375,
+    "center_y_norm": 0.65625,
+    "width_norm": 0.1875,
+    "height_norm": 0.189453125
+  },
+  "output_svg": "outputs/openmoji_parts/reviewed/mouth/1F62E_open.svg",
+  "output_png": "outputs/openmoji_parts/reviewed/mouth/1F62E_open.png"
+}

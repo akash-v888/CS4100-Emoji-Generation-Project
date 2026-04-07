@@ -1,0 +1,27 @@
+{
+  "part_type": "eyebrows",
+  "descriptor": "raised",
+  "info": {
+    "part_type": "eyebrows",
+    "descriptor": "raised",
+    "source_svg": "1F60F.svg",
+    "element_indices": [
+      3,
+      4
+    ],
+    "bbox_x1": 151,
+    "bbox_y1": 177,
+    "bbox_x2": 367,
+    "bbox_y2": 211,
+    "bbox_x1_norm": 0.294921875,
+    "bbox_y1_norm": 0.345703125,
+    "bbox_x2_norm": 0.716796875,
+    "bbox_y2_norm": 0.412109375,
+    "center_x_norm": 0.505859375,
+    "center_y_norm": 0.37890625,
+    "width_norm": 0.423828125,
+    "height_norm": 0.068359375
+  },
+  "output_svg": "outputs/openmoji_parts/reviewed/eyebrows/1F60F_raised.svg",
+  "output_png": "outputs/openmoji_parts/reviewed/eyebrows/1F60F_raised.png"
+}

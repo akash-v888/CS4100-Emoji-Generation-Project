@@ -1,0 +1,27 @@
+{
+  "part_type": "eyes",
+  "descriptor": "round",
+  "info": {
+    "part_type": "eyes",
+    "descriptor": "round",
+    "source_svg": "1F60F.svg",
+    "element_indices": [
+      5,
+      6
+    ],
+    "bbox_x1": 184,
+    "bbox_y1": 213,
+    "bbox_x2": 355,
+    "bbox_y2": 255,
+    "bbox_x1_norm": 0.359375,
+    "bbox_y1_norm": 0.416015625,
+    "bbox_x2_norm": 0.693359375,
+    "bbox_y2_norm": 0.498046875,
+    "center_x_norm": 0.5263671875,
+    "center_y_norm": 0.45703125,
+    "width_norm": 0.3359375,
+    "height_norm": 0.083984375
+  },
+  "output_svg": "outputs/openmoji_parts/reviewed/eyes/1F60F_round.svg",
+  "output_png": "outputs/openmoji_parts/reviewed/eyes/1F60F_round.png"
+}

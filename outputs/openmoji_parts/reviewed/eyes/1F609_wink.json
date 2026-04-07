@@ -1,0 +1,27 @@
+{
+  "part_type": "eyes",
+  "descriptor": "wink",
+  "info": {
+    "part_type": "eyes",
+    "descriptor": "wink",
+    "source_svg": "1F609.svg",
+    "element_indices": [
+      6,
+      7
+    ],
+    "bbox_x1": 178,
+    "bbox_y1": 229,
+    "bbox_x2": 341,
+    "bbox_y2": 272,
+    "bbox_x1_norm": 0.34765625,
+    "bbox_y1_norm": 0.447265625,
+    "bbox_x2_norm": 0.666015625,
+    "bbox_y2_norm": 0.53125,
+    "center_x_norm": 0.5068359375,
+    "center_y_norm": 0.4892578125,
+    "width_norm": 0.3203125,
+    "height_norm": 0.0859375
+  },
+  "output_svg": "outputs/openmoji_parts/reviewed/eyes/1F609_wink.svg",
+  "output_png": "outputs/openmoji_parts/reviewed/eyes/1F609_wink.png"
+}

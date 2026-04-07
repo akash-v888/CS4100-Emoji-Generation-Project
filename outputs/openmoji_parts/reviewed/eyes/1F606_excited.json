@@ -1,0 +1,27 @@
+{
+  "part_type": "eyes",
+  "descriptor": "excited",
+  "info": {
+    "part_type": "eyes",
+    "descriptor": "excited",
+    "source_svg": "1F606.svg",
+    "element_indices": [
+      3,
+      4
+    ],
+    "bbox_x1": 171,
+    "bbox_y1": 187,
+    "bbox_x2": 340,
+    "bbox_y2": 257,
+    "bbox_x1_norm": 0.333984375,
+    "bbox_y1_norm": 0.365234375,
+    "bbox_x2_norm": 0.6640625,
+    "bbox_y2_norm": 0.501953125,
+    "center_x_norm": 0.4990234375,
+    "center_y_norm": 0.43359375,
+    "width_norm": 0.33203125,
+    "height_norm": 0.138671875
+  },
+  "output_svg": "outputs/openmoji_parts/reviewed/eyes/1F606_excited.svg",
+  "output_png": "outputs/openmoji_parts/reviewed/eyes/1F606_excited.png"
+}

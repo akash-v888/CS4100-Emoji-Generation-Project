@@ -1,0 +1,26 @@
+{
+  "part_type": "mouth",
+  "descriptor": "smirk",
+  "info": {
+    "part_type": "mouth",
+    "descriptor": "smirk",
+    "source_svg": "1F60F.svg",
+    "element_indices": [
+      2
+    ],
+    "bbox_x1": 205,
+    "bbox_y1": 295,
+    "bbox_x2": 340,
+    "bbox_y2": 340,
+    "bbox_x1_norm": 0.400390625,
+    "bbox_y1_norm": 0.576171875,
+    "bbox_x2_norm": 0.6640625,
+    "bbox_y2_norm": 0.6640625,
+    "center_x_norm": 0.5322265625,
+    "center_y_norm": 0.6201171875,
+    "width_norm": 0.265625,
+    "height_norm": 0.08984375
+  },
+  "output_svg": "outputs/openmoji_parts/reviewed/mouth/1F60F_smirk.svg",
+  "output_png": "outputs/openmoji_parts/reviewed/mouth/1F60F_smirk.png"
+}

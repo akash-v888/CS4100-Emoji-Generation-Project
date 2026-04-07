@@ -1,0 +1,31 @@
+{
+  "part_type": "eyes",
+  "descriptor": "eye roll",
+  "info": {
+    "part_type": "eyes",
+    "descriptor": "eye roll",
+    "source_svg": "1F644.svg",
+    "element_indices": [
+      1,
+      2,
+      3,
+      4,
+      6,
+      7
+    ],
+    "bbox_x1": 131,
+    "bbox_y1": 174,
+    "bbox_x2": 380,
+    "bbox_y2": 280,
+    "bbox_x1_norm": 0.255859375,
+    "bbox_y1_norm": 0.33984375,
+    "bbox_x2_norm": 0.7421875,
+    "bbox_y2_norm": 0.546875,
+    "center_x_norm": 0.4990234375,
+    "center_y_norm": 0.443359375,
+    "width_norm": 0.48828125,
+    "height_norm": 0.208984375
+  },
+  "output_svg": "outputs/openmoji_parts/reviewed/eyes/1F644_eye_roll.svg",
+  "output_png": "outputs/openmoji_parts/reviewed/eyes/1F644_eye_roll.png"
+}
