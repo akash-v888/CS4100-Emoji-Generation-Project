@@ -95,25 +95,43 @@ Existing features to include (already computed):
 
 ## Phase 3: Labeling Tool & Training Data
 
-### 3a. Create `src/labeling_tool.py`
-CLI tool that:
-1. Displays face image with landmarks overlay
-2. Prompts for labels per category:
-   - `face_shape`: oval / round / square / heart / oblong
-   - `eye_type`: round / narrow / wide / squinting (matching extracted asset variants)
-   - `mouth_type`: smile / neutral / open / frown / wide
-   - `brow_type`: flat / arched / angled / raised
-   - `nose_type`: small / medium / wide / pointed
-3. Appends to `data/labels/manual_labels.csv`
+### 3a. Create `src/labeling_tool.py` — **DONE**
+CLI tool for manual labeling (backup option). Shows face with landmarks, prompts for labels per category, appends to `data/labels/manual_labels.csv`.
 
-### 3b. Collect ~100 face images
-Source from UTKFace or LFW (public), store in `data/raw/`. Label each (~50 min).
+### 3b. Import CelebA dataset and auto-label — **Assigned: Jess**
+Uses `src/import_celeba.py` to download a CelebA subset from Kaggle and auto-map its 40 binary attributes to our emoji categories. No manual labeling needed.
 
-### 3c. Create `src/build_dataset.py`
-1. Read all images from `data/raw/`
-2. Run `FaceProcessor` + `compute_all_features` + `estimate_skin_tone` on each
-3. Join with labels from `manual_labels.csv`
-4. Output `data/processed/features_labeled.csv`
+**One-time setup:**
+1. `pip install kaggle`
+2. Go to https://www.kaggle.com/settings → "Create New Token"
+3. Save downloaded `kaggle.json` to `~/.kaggle/kaggle.json`
+4. `chmod 600 ~/.kaggle/kaggle.json`
+
+**Run:**
+```
+python src/import_celeba.py --count 500
+```
+
+This will:
+1. Download CelebA from Kaggle (~1.4GB) to `data/celeba_raw/`
+2. Filter out images with glasses/hats/blur
+3. Sample 500 images → `data/raw/`
+4. Map CelebA attributes to our categories → `data/labels/manual_labels.csv`
+   - `Smiling` + `Mouth_Slightly_Open` → mouth_type
+   - `Oval_Face`, `Chubby`, `High_Cheekbones` → face_shape
+   - `Narrow_Eyes`, `Bags_Under_Eyes` → eye_type
+   - `Arched_Eyebrows`, `Bushy_Eyebrows` → brow_type
+   - `Big_Nose`, `Pointy_Nose` → nose_type
+5. Print label distribution
+
+**After import, build the feature dataset:**
+```
+python src/build_dataset.py
+```
+This runs landmarking + `compute_all_features` + skin tone on each image, joins with labels → `data/processed/features_labeled.csv`.
+
+### 3c. Create `src/build_dataset.py` — **DONE**
+Batch feature extraction + label join pipeline. Already created.
 
 ---
 
@@ -208,9 +226,9 @@ Update `DEFAULT_SKIN_TONE_PALETTE` (line 10-16) to match the fill colors actuall
 |---|------|-------|--------|
 | 1 | Finish extracting assets (eyes, brows, remaining emojis) | Run `extract_openmoji_parts.py` | **DONE** (21 eyes, 4 brows, 27 mouths, 21 faces) |
 | 2 | Expand feature extraction | Modify `src/features.py` | **DONE** (16 ratio features) |
-| 3 | Build labeling tool | Create `src/labeling_tool.py` | TODO |
-| 4 | Collect & label ~100 images | `data/raw/`, `data/labels/manual_labels.csv` | TODO (1 image exists) |
-| 5 | Build dataset pipeline | Create `src/build_dataset.py` | TODO |
+| 3 | Build labeling tool | Create `src/labeling_tool.py` | **DONE** |
+| 4 | Import CelebA + auto-label (~500 images) | Run `src/import_celeba.py` | TODO — **Assigned: Jess** |
+| 5 | Build dataset pipeline | Create `src/build_dataset.py` + run after step 4 | **DONE** (code ready, run after step 4) |
 | 6 | Train & compare models | Create `src/train.py`, `src/evaluate.py` | TODO |
 | 7 | Build emoji composer | Create `src/compose.py` | TODO |
 | 8 | End-to-end pipeline | Create `src/pipeline.py` | TODO |
@@ -230,8 +248,9 @@ Steps 8-9 depend on steps 6-7.
 |------|--------|---------|
 | `src/features.py` | Modify | Expand from 9→~25 ratio-only features |
 | `src/extract_openmoji_parts.py` | Done | All 21 emojis extracted; `--filter` flag added for re-extraction |
-| `src/labeling_tool.py` | Create | CLI for labeling face images with component categories |
-| `src/build_dataset.py` | Create | Batch feature extraction + label join → CSV |
+| `src/labeling_tool.py` | Done | CLI for manual labeling (backup option) |
+| `src/import_celeba.py` | Run (Jess) | Download CelebA subset, auto-map attributes to emoji categories |
+| `src/build_dataset.py` | Done (run after import) | Batch feature extraction + label join → CSV |
 | `src/train.py` | Create | KNN/RF/SVM/DT comparison with stratified CV |
 | `src/evaluate.py` | Create | Plots: accuracy bars, confusion matrices |
 | `src/compose.py` | Create | Pillow face shape + OpenMoji part overlays |
