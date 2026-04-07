@@ -24,17 +24,16 @@ CS4100 (Machine Learning) course project: automate personalized emoji creation f
 - `data/raw/sample.jpg` - 1 test image
 - `data/labels/manual_labels.csv` - headers (image_name,face_shape,eye_type,mouth_type,brow_type,nose_type,skin_tone) + 1 incomplete row
 
-**Extracted assets so far (in progress):**
-- `outputs/openmoji_parts/reviewed/mouths/` - 5 mouth parts from 2 emojis (1F600, 1F601):
-  - `1F600_004_center_mouth_red` - red fill path
-  - `1F600_006_center_teeth` - teeth shape
-  - `1F600_007_center_mouth_outline` - outline path
-  - `1F601_006_center_teeth` - teeth shape
-  - `1F601_007_center_mouth_white` - white area
-  - Each part has `.svg`, `.png`, `.json` (with `review` labels + `stats` including normalized bbox positions)
-- No eyes or eyebrows extracted yet. 19 of 21 emojis not yet processed.
+**Extracted assets (complete):**
+- `outputs/openmoji_parts/reviewed/eyes/` - 21 eye variants (round, squint, wink, wide, closed, eye_roll, excited, etc.)
+- `outputs/openmoji_parts/reviewed/eyebrows/` - 4 eyebrow variants (raised, sad, mad)
+- `outputs/openmoji_parts/reviewed/mouth/` - 21 mouth variants (smile, tongue_out, smirk, straight, sad, kiss, frown, wide, open, closed, slight_smile, slight_frown)
+- `outputs/openmoji_parts/reviewed/mouths/` - 6 legacy mouth subparts from early extraction (1F600, 1F601)
+- `outputs/openmoji_parts/reviewed/face/` - 21 face variants
+- Each part has `.svg`, `.png`, `.json` (with `review` labels + `stats` including normalized bbox positions)
+- All 21 emojis processed.
 
-**What's missing:** finish asset extraction (eyes, eyebrows, remaining emojis), expanded features, training data, ML training/comparison, emoji composition, end-to-end pipeline, demo UI.
+**What's missing:** expanded features, training data, ML training/comparison, emoji composition, end-to-end pipeline, demo UI.
 
 ---
 
@@ -47,18 +46,13 @@ Asset extraction is IN PROGRESS — 5 mouths extracted from 1F600 and 1F601, but
 python src/extract_openmoji_parts.py --input_dir data/openmojis --output_dir outputs/openmoji_parts
 ```
 
-**Goal**: Extract ~3-5 distinct variants per part type across all 21 emojis:
-- Eyes: round, narrow, wide, squinting (pairs preferred via `e` key)
-- Eyebrows: flat, arched, angled, raised (pairs preferred via `b` key)
-- Mouths: smile, neutral, open, frown, wide (already have 5, need variety from more emojis)
+**Result**: All 21 emojis processed. Asset counts:
+- Eyes: 21 variants (round, squint, wink, wide, closed, eye_roll, excited)
+- Eyebrows: 4 variants (raised, sad, mad)
+- Mouths: 21 variants in `mouth/` (smile, tongue_out, smirk, straight, sad, kiss, frown, wide, open, closed, slight_smile, slight_frown) + 6 legacy subparts in `mouths/`
+- Faces: 21 variants
 
-**Tip**: The extractor prioritizes mouths first, then eyes, then eyebrows in review order. Use `x` to reject subparts you don't need. The `suppress_subparts()` logic already filters most duplicates, but individual teeth/outlines may still appear — reject those and keep the composite group versions.
-
-### 1b. Face shapes
-The extractor's `is_likely_full_face()` (line 290) intentionally skips face shapes. Options:
-- **Option A**: Draw face shapes with Pillow (simplest) — oval, round, square ellipses filled with skin tone
-- **Option B**: Modify `is_likely_full_face()` to allow saving the face outline separately
-- **Recommended**: Option A — all OpenMoji faces use the same yellow circle, so there's no variety to extract. Drawing parameterized Pillow shapes gives more face shape options.
+**Note**: `--filter` flag was added to re-run extraction on specific emojis (e.g. `--filter 1F61B 1F60F`).
 
 ---
 
@@ -212,8 +206,8 @@ Update `DEFAULT_SKIN_TONE_PALETTE` (line 10-16) to match the fill colors actuall
 
 | # | Task | Files | Status |
 |---|------|-------|--------|
-| 1 | Finish extracting assets (eyes, brows, remaining emojis) | Run `extract_openmoji_parts.py` | IN PROGRESS (5 mouths done) |
-| 2 | Expand feature extraction | Modify `src/features.py` | TODO |
+| 1 | Finish extracting assets (eyes, brows, remaining emojis) | Run `extract_openmoji_parts.py` | **DONE** (21 eyes, 4 brows, 27 mouths, 21 faces) |
+| 2 | Expand feature extraction | Modify `src/features.py` | **DONE** (16 ratio features) |
 | 3 | Build labeling tool | Create `src/labeling_tool.py` | TODO |
 | 4 | Collect & label ~100 images | `data/raw/`, `data/labels/manual_labels.csv` | TODO (1 image exists) |
 | 5 | Build dataset pipeline | Create `src/build_dataset.py` | TODO |
@@ -235,7 +229,7 @@ Steps 8-9 depend on steps 6-7.
 | File | Action | Purpose |
 |------|--------|---------|
 | `src/features.py` | Modify | Expand from 9→~25 ratio-only features |
-| `src/extract_openmoji_parts.py` | Run (read-only) | Extract remaining eyes/eyebrows from 19 unprocessed emojis |
+| `src/extract_openmoji_parts.py` | Done | All 21 emojis extracted; `--filter` flag added for re-extraction |
 | `src/labeling_tool.py` | Create | CLI for labeling face images with component categories |
 | `src/build_dataset.py` | Create | Batch feature extraction + label join → CSV |
 | `src/train.py` | Create | KNN/RF/SVM/DT comparison with stratified CV |
