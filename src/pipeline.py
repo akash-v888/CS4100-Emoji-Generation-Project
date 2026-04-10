@@ -32,6 +32,65 @@ FEATURE_COLS = [
 CATEGORY_COLS = ["face_shape", "eye_type", "mouth_type", "brow_type", "nose_type"]
 
 
+def detect_hair(
+    image_bgr: np.ndarray,
+    landmarks: np.ndarray,
+    skin_rgb: tuple[int, int, int],
+) -> tuple[tuple[int, int, int] | None, str]:
+    """
+    Detect hair color and style from the image.
+    Returns (hair_color_rgb or None, "short" | "long" | "none").
+    """
+    h, w = image_bgr.shape[:2]
+    forehead = landmarks[10]
+    left_face = landmarks[234]
+    right_face = landmarks[454]
+    face_width = np.linalg.norm(left_face - right_face)
+
+    # Sample well above forehead (landmark 10 is mid-forehead, not hairline)
+    cx = int(forehead[0])
+    sample_bottom = max(0, int(forehead[1] - face_width * 0.20))
+    sample_top = max(0, int(forehead[1] - face_width * 0.40))
+    half_w = int(face_width * 0.20)
+    x1, x2 = max(0, cx - half_w), min(w, cx + half_w)
+
+    if sample_bottom <= sample_top or x2 <= x1:
+        return None, "none"
+
+    hair_region = image_bgr[sample_top:sample_bottom, x1:x2]
+    if hair_region.size == 0:
+        return None, "none"
+
+    median_bgr = np.median(hair_region.reshape(-1, 3), axis=0)
+    hair_rgb = (int(median_bgr[2]), int(median_bgr[1]), int(median_bgr[0]))
+
+    skin_arr = np.array(skin_rgb, dtype=float)
+    hair_arr = np.array(hair_rgb, dtype=float)
+    if np.linalg.norm(skin_arr - hair_arr) < 35:
+        return None, "none"
+
+    # Check for long hair: both sides below jaw must have hair-colored pixels
+    chin = landmarks[152]
+    jaw_left, jaw_right = landmarks[172], landmarks[397]
+    jaw_y = int(max(jaw_left[1], jaw_right[1]))
+    side_bottom = min(h, int(chin[1] + face_width * 0.25))
+
+    sides_with_hair = 0
+    for sx1, sx2 in [(max(0, int(jaw_left[0] - face_width * 0.30)),
+                       max(0, int(jaw_left[0] - face_width * 0.15))),
+                      (min(w, int(jaw_right[0] + face_width * 0.15)),
+                       min(w, int(jaw_right[0] + face_width * 0.30)))]:
+        if sx2 > sx1 and side_bottom > jaw_y:
+            side_region = image_bgr[jaw_y:side_bottom, sx1:sx2]
+            if side_region.size > 0:
+                side_mean = side_region.mean(axis=(0, 1))
+                side_rgb = np.array([side_mean[2], side_mean[1], side_mean[0]])
+                if np.linalg.norm(side_rgb - hair_arr) < np.linalg.norm(side_rgb - skin_arr) * 0.6:
+                    sides_with_hair += 1
+
+    return hair_rgb, "long" if sides_with_hair == 2 else "short"
+
+
 def generate_emoji(
     image_path: str,
     model_dir: str = str(PROJECT_ROOT / "models" / "trained"),
@@ -75,15 +134,24 @@ def generate_emoji(
     else:
         predictions["eye_type"] = "round"
 
-    # 5. Compose emoji — use actual sampled skin color for best match
+    # 5. Detect hair
+    hair_color, hair_style = detect_hair(image_bgr, face_result.landmarks_pixels, skin.mean_rgb)
+    predictions["hair_style"] = hair_style
+    predictions["hair_color_rgb"] = hair_color
+
+    # 6. Lighten sampled skin color — photos have shadows that make cheeks
+    # darker than the person actually appears. Boost brightness for emoji fill.
+    skin_rgb = tuple(min(255, int(c * 1.25)) for c in skin.mean_rgb)
+
+    # 7. Compose emoji
     composer = EmojiComposer(assets_dir)
-    emoji_img = composer.compose(predictions, skin.mean_rgb)
+    emoji_img = composer.compose(predictions, skin_rgb)
 
     info = {
         "features": features,
         "predictions": predictions,
         "skin_tone_id": skin.matched_tone_id,
-        "skin_tone_rgb": skin.mean_rgb,
+        "skin_tone_rgb": skin_rgb,
     }
 
     return emoji_img, info
