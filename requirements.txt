@@ -23,6 +23,7 @@ six==1.17.0
 sounddevice==0.5.5
 tinycss2==1.5.1
 webencodings==0.5.1
+scipy==1.17.1
 scikit-learn==1.8.0
 joblib==1.5.3
 pandas==3.0.2
