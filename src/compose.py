@@ -74,59 +74,44 @@ class EmojiComposer:
 
         return None
 
-    def _draw_face_shape(self, face_shape: str, skin_tone_rgb: tuple[int, int, int]) -> Image.Image:
-        """Draw a parameterized face shape filled with skin tone."""
-        canvas = Image.new("RGBA", (CANVAS_SIZE, CANVAS_SIZE), (0, 0, 0, 0))
-        draw = ImageDraw.Draw(canvas)
-
-        cx, cy = CANVAS_SIZE // 2, CANVAS_SIZE // 2
-        outline_rgb = tuple(max(0, c - 40) for c in skin_tone_rgb)
-        fill = (*skin_tone_rgb, 255)
-        outline = (*outline_rgb, 255)
-
-        if face_shape == "round":
+    def _make_face(self, skin_tone_rgb: tuple[int, int, int]) -> Image.Image:
+        """Load an OpenMoji circle face asset and recolor yellow fill to skin tone."""
+        face_asset = self._pick_asset("face", "round")
+        if face_asset is None:
+            # Fallback: plain circle
+            canvas = Image.new("RGBA", (CANVAS_SIZE, CANVAS_SIZE), (0, 0, 0, 0))
+            draw = ImageDraw.Draw(canvas)
             r = int(CANVAS_SIZE * 0.45)
-            draw.ellipse([cx - r, cy - r, cx + r, cy + r], fill=fill, outline=outline, width=3)
+            cx, cy = CANVAS_SIZE // 2, CANVAS_SIZE // 2
+            fill = (*skin_tone_rgb, 255)
+            draw.ellipse([cx - r, cy - r, cx + r, cy + r], fill=fill, outline=(0, 0, 0, 255), width=3)
+            return canvas
 
-        elif face_shape == "oval":
-            rw = int(CANVAS_SIZE * 0.42)
-            rh = int(CANVAS_SIZE * 0.47)
-            draw.ellipse([cx - rw, cy - rh, cx + rw, cy + rh], fill=fill, outline=outline, width=3)
+        face_img = Image.open(face_asset["png_path"]).convert("RGBA")
+        info = face_asset["info"]
 
-        elif face_shape == "square":
-            half = int(CANVAS_SIZE * 0.42)
-            r = 40
-            draw.rounded_rectangle([cx - half, cy - half, cx + half, cy + half],
-                                   radius=r, fill=fill, outline=outline, width=3)
+        # Resize to fill canvas at the asset's original position
+        x1 = int(info["bbox_x1_norm"] * CANVAS_SIZE)
+        y1 = int(info["bbox_y1_norm"] * CANVAS_SIZE)
+        x2 = int(info["bbox_x2_norm"] * CANVAS_SIZE)
+        y2 = int(info["bbox_y2_norm"] * CANVAS_SIZE)
+        face_img = face_img.resize((x2 - x1, y2 - y1), Image.LANCZOS)
 
-        elif face_shape == "heart":
-            rw = int(CANVAS_SIZE * 0.44)
-            rh = int(CANVAS_SIZE * 0.47)
-            # Wider top, narrower bottom via polygon + ellipse combo
-            draw.ellipse([cx - rw, cy - rh, cx + rw, cy + int(rh * 0.3)], fill=fill, outline=None)
-            # Chin triangle
-            points = [
-                (cx - int(rw * 0.75), cy),
-                (cx, cy + rh),
-                (cx + int(rw * 0.75), cy),
-            ]
-            draw.polygon(points, fill=fill, outline=None)
-            # Outline
-            draw.ellipse([cx - rw, cy - rh, cx + rw, cy + int(rh * 0.3)], fill=None, outline=outline, width=3)
-            draw.line([(cx - int(rw * 0.75), cy), (cx, cy + rh)], fill=outline, width=3)
-            draw.line([(cx + int(rw * 0.75), cy), (cx, cy + rh)], fill=outline, width=3)
+        # Recolor: replace yellow-ish pixels with skin tone, keep dark outline
+        arr = np.array(face_img, dtype=np.float32)
+        r, g, b, a = arr[:, :, 0], arr[:, :, 1], arr[:, :, 2], arr[:, :, 3]
 
-        elif face_shape == "oblong":
-            rw = int(CANVAS_SIZE * 0.38)
-            rh = int(CANVAS_SIZE * 0.48)
-            draw.ellipse([cx - rw, cy - rh, cx + rw, cy + rh], fill=fill, outline=outline, width=3)
+        # Yellow pixels: high R, high G, low B, opaque
+        is_yellow = (r > 180) & (g > 180) & (b < 120) & (a > 128)
 
-        else:
-            # Default to oval
-            rw = int(CANVAS_SIZE * 0.42)
-            rh = int(CANVAS_SIZE * 0.47)
-            draw.ellipse([cx - rw, cy - rh, cx + rw, cy + rh], fill=fill, outline=outline, width=3)
+        arr[is_yellow, 0] = skin_tone_rgb[0]
+        arr[is_yellow, 1] = skin_tone_rgb[1]
+        arr[is_yellow, 2] = skin_tone_rgb[2]
 
+        recolored = Image.fromarray(arr.astype(np.uint8), "RGBA")
+
+        canvas = Image.new("RGBA", (CANVAS_SIZE, CANVAS_SIZE), (0, 0, 0, 0))
+        canvas.paste(recolored, (x1, y1), recolored)
         return canvas
 
     def _paste_part(self, canvas: Image.Image, asset: dict) -> Image.Image:
@@ -155,10 +140,8 @@ class EmojiComposer:
         components: {"face_shape": "oval", "eye_type": "round", "mouth_type": "smile", "brow_type": "raised", ...}
         skin_tone_rgb: RGB tuple for face fill color
         """
-        face_shape = components.get("face_shape", "oval")
-
-        # 1. Draw face shape
-        canvas = self._draw_face_shape(face_shape, skin_tone_rgb)
+        # 1. Face circle recolored to skin tone
+        canvas = self._make_face(skin_tone_rgb)
 
         # 2. Layer parts in order: mouth, eyes, eyebrows (back to front)
         part_order = [
@@ -177,7 +160,6 @@ class EmojiComposer:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Compose an emoji from parts.")
-    parser.add_argument("--face_shape", default="oval", choices=["oval", "round", "square", "heart", "oblong"])
     parser.add_argument("--eye_type", default="round")
     parser.add_argument("--mouth_type", default="smile")
     parser.add_argument("--brow_type", default="flat")
@@ -190,7 +172,6 @@ def main() -> None:
 
     composer = EmojiComposer(args.assets_dir)
     components = {
-        "face_shape": args.face_shape,
         "eye_type": args.eye_type,
         "mouth_type": args.mouth_type,
         "brow_type": args.brow_type,

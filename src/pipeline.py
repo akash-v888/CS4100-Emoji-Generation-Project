@@ -66,6 +66,15 @@ def generate_emoji(
         y_pred = clf.predict(X)[0]
         predictions[category] = le.inverse_transform([y_pred])[0]
 
+    # Override eye_type with direct thresholds (classifier is weak due to noisy labels)
+    avg_eye_aspect = (features["eye_aspect_ratio_left"] + features["eye_aspect_ratio_right"]) / 2
+    if avg_eye_aspect < 0.27:
+        predictions["eye_type"] = "squint"
+    elif avg_eye_aspect > 0.40:
+        predictions["eye_type"] = "wide"
+    else:
+        predictions["eye_type"] = "round"
+
     # 5. Compose emoji — use actual sampled skin color for best match
     composer = EmojiComposer(assets_dir)
     emoji_img = composer.compose(predictions, skin.mean_rgb)
