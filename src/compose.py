@@ -83,7 +83,6 @@ class EmojiComposer:
         """Load an OpenMoji circle face asset and recolor yellow fill to skin tone."""
         face_asset = self._pick_asset("face", "round")
         if face_asset is None:
-            # Fallback: plain circle
             canvas = Image.new("RGBA", (CANVAS_SIZE, CANVAS_SIZE), (0, 0, 0, 0))
             draw = ImageDraw.Draw(canvas)
             r = int(CANVAS_SIZE * 0.45)
@@ -95,25 +94,22 @@ class EmojiComposer:
         face_img = Image.open(face_asset["png_path"]).convert("RGBA")
         info = face_asset["info"]
 
-        # Resize to fill canvas at the asset's original position
         x1 = int(info["bbox_x1_norm"] * CANVAS_SIZE)
         y1 = int(info["bbox_y1_norm"] * CANVAS_SIZE)
         x2 = int(info["bbox_x2_norm"] * CANVAS_SIZE)
         y2 = int(info["bbox_y2_norm"] * CANVAS_SIZE)
         face_img = face_img.resize((x2 - x1, y2 - y1), Image.LANCZOS)
 
-        # Recolor: replace yellow-ish pixels with skin tone, keep dark outline
         arr = np.array(face_img, dtype=np.float32)
         r, g, b, a = arr[:, :, 0], arr[:, :, 1], arr[:, :, 2], arr[:, :, 3]
 
-        # Yellow pixels: high R, high G, low B, opaque
+        # Yellow → skin tone
         is_yellow = (r > 180) & (g > 180) & (b < 120) & (a > 128)
-
         arr[is_yellow, 0] = skin_tone_rgb[0]
         arr[is_yellow, 1] = skin_tone_rgb[1]
         arr[is_yellow, 2] = skin_tone_rgb[2]
 
-        # Recolor black outline to a darker shade of the skin tone
+        # Dark outline → darker skin tone
         outline_rgb = tuple(max(0, int(c * 0.55)) for c in skin_tone_rgb)
         is_dark = (r < 60) & (g < 60) & (b < 60) & (a > 128)
         arr[is_dark, 0] = outline_rgb[0]
@@ -141,13 +137,11 @@ class EmojiComposer:
         target_h = y2 - y1
 
         if target_w > 0 and target_h > 0:
-            part_img = part_img.resize((target_w, target_h), Image.LANCZOS)
-
-            # Recolor black strokes to match skin tone outline
+            # Recolor BEFORE resize to avoid anti-aliasing creating blended edge pixels
             if outline_rgb is not None:
                 arr = np.array(part_img, dtype=np.float32)
                 r, g, b, a = arr[:, :, 0], arr[:, :, 1], arr[:, :, 2], arr[:, :, 3]
-                is_dark = (r < 60) & (g < 60) & (b < 60) & (a > 128)
+                is_dark = (r < 60) & (g < 60) & (b < 60) & (a > 10)  # strict for parts
 
                 # Detect red/tongue pixels and find dark pixels adjacent to them
                 is_red = (r > 150) & (g < 100) & (b < 100) & (a > 128)
@@ -174,8 +168,12 @@ class EmojiComposer:
                     arr[is_dark, 1] = outline_rgb[1]
                     arr[is_dark, 2] = outline_rgb[2]
 
+                # Make all recolored dark pixels fully opaque to prevent bleed-through
+                arr[is_dark, 3] = 255
+
                 part_img = Image.fromarray(arr.astype(np.uint8), "RGBA")
 
+            part_img = part_img.resize((target_w, target_h), Image.LANCZOS)
             canvas.paste(part_img, (x1, y1), part_img)
 
         return canvas
@@ -201,6 +199,23 @@ class EmojiComposer:
         # 2. Face circle
         face = self._make_face(skin_tone_rgb)
         canvas.paste(face, (0, 0), face)
+
+        # 2b. Short hair only: paste a skin-colored ellipse to hide face border under hair
+        if hair_color and hair_style == "short":
+            cover = Image.new("RGBA", (CANVAS_SIZE, CANVAS_SIZE), (0, 0, 0, 0))
+            draw_cover = ImageDraw.Draw(cover)
+            cx = CANVAS_SIZE // 2
+            face_top = int(CANVAS_SIZE * 0.166)
+            face_r = int(CANVAS_SIZE * 0.333)
+            face_cy = CANVAS_SIZE // 2
+            skin_fill = (*skin_tone_rgb, 255)
+            inset = int(CANVAS_SIZE * 0.025)
+            draw_cover.ellipse([cx - face_r + inset, face_cy - face_r + inset,
+                                cx + face_r - inset, face_cy + face_r - inset],
+                               fill=skin_fill)
+            cut_y = face_cy - int(face_r * 0.10)
+            draw_cover.rectangle([0, cut_y, CANVAS_SIZE, CANVAS_SIZE], fill=(0, 0, 0, 0))
+            canvas.paste(cover, (0, 0), cover)
 
         # 3. Facial features
         outline_rgb = tuple(max(0, int(c * 0.55)) for c in skin_tone_rgb)
@@ -255,7 +270,11 @@ class EmojiComposer:
         points = [(int(hair_x + px * hair_w), int(hair_y + py * hair_h))
                   for px, py in self.HAIR_SHORT_CONTOUR]
 
-        draw.polygon(points, fill=fill)
+        outline_color = (*tuple(max(0, int(c * 0.55)) for c in hair_color), 255)
+
+        draw.polygon(points, fill=fill, outline=outline_color)
+        draw.line(points + [points[0]], fill=outline_color, width=10)
+
         return canvas
 
     def _draw_hair_long_top(self, hair_color: tuple[int, int, int]) -> Image.Image:
@@ -264,17 +283,19 @@ class EmojiComposer:
         draw = ImageDraw.Draw(canvas)
         cx = CANVAS_SIZE // 2
         fill = (*hair_color, 255)
+        outline_color = (*tuple(max(0, int(c * 0.55)) for c in hair_color), 255)
 
         face_top = int(CANVAS_SIZE * 0.166)
         face_r = int(CANVAS_SIZE * 0.333)
         pad = int(CANVAS_SIZE * 0.04)
 
-        # Dome on top
-        draw.ellipse([cx - face_r - pad, face_top - pad,
+        # Dome on top — taller so it sits higher above the head
+        dome_top = face_top - pad - int(CANVAS_SIZE * 0.06)
+        draw.ellipse([cx - face_r - pad, dome_top,
                        cx + face_r + pad, face_top + face_r],
-                      fill=fill)
+                      fill=fill, outline=outline_color, width=10)
 
-        # Erase below the parting line
+        # Erase below the parting line (same forehead position)
         part_y = face_top + int(face_r * 0.45)
         draw.rectangle([0, part_y, CANVAS_SIZE, CANVAS_SIZE], fill=(0, 0, 0, 0))
 
@@ -286,6 +307,7 @@ class EmojiComposer:
         draw = ImageDraw.Draw(canvas)
         cx = CANVAS_SIZE // 2
         fill = (*hair_color, 255)
+        outline_color = (*tuple(max(0, int(c * 0.55)) for c in hair_color), 255)
 
         face_top = int(CANVAS_SIZE * 0.166)
         face_r = int(CANVAS_SIZE * 0.333)
@@ -296,17 +318,18 @@ class EmojiComposer:
         curtain_top = face_top + int(face_r * 0.2)
         curtain_bottom = int(CANVAS_SIZE * 0.90)
 
-        # Left
+        r = int(CANVAS_SIZE * 0.05)
+        # Left curtain
         draw.rounded_rectangle(
             [cx - face_r - pad, curtain_top,
              cx - face_r + curtain_w, curtain_bottom],
-            radius=int(CANVAS_SIZE * 0.05), fill=fill)
+            radius=r, fill=fill, outline=outline_color, width=10)
 
-        # Right
+        # Right curtain
         draw.rounded_rectangle(
             [cx + face_r - curtain_w, curtain_top,
              cx + face_r + pad, curtain_bottom],
-            radius=int(CANVAS_SIZE * 0.05), fill=fill)
+            radius=r, fill=fill, outline=outline_color, width=10)
 
         return canvas
 

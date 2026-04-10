@@ -220,6 +220,34 @@ Recalibrated `DEFAULT_SKIN_TONE_PALETTE` to Fitzpatrick scale values. Pipeline n
 
 ---
 
+## Phase 8: Post-MVP Refinements — **DONE**
+
+Visual polish and feature additions after all core phases were complete:
+
+### Emoji Composition Improvements
+- **Face asset**: Uses OpenMoji circle asset recolored to skin tone (replaced Pillow-drawn shapes)
+- **Outline colors**: All outlines (face, eyes, mouth, eyebrows) use darker shade of skin tone (55% brightness), not black
+- **Mouth fix**: Teeth/tongue separator uses darker tongue color. Recoloring done before resize to prevent anti-aliased red bleed-through. Excluded 1F601 mouth (teeth-only, no tongue fill)
+- **Eye classification**: Direct aspect ratio thresholds replace weak classifier (<0.27 squint, 0.27-0.40 round, >0.40 wide)
+- **Skin tone**: 25% brightness boost on sampled cheek color to compensate for photo shadows
+
+### Hair System
+- **Detection** (`pipeline.py`): Auto-detects hair color (median of pixels above forehead) and style (short vs long based on side-of-jaw analysis)
+- **Short hair**: Traced polygon from `icons8-red-hair-96.png` reference, recolored flat to detected color. Skin-colored ellipse mask hides face border under hair.
+- **Long hair**: Dome on top (ellipse, raised for volume) + side curtains behind face
+- **No hair**: Bald — face border unchanged
+- **Hair borders**: Darker shade of hair color, same thickness as face border (~10px), non-inset
+- **Eyebrows**: Color matches detected hair color
+
+### Files Modified
+- `src/compose.py` — Hair drawing, outline recoloring, face border masking, mouth fix
+- `src/pipeline.py` — `detect_hair()`, eye threshold override, skin tone brightness boost
+- `src/skin_tone.py` — Calibrated Fitzpatrick palette
+- `icons8-red-hair-96.png` — Reference asset for short hair shape tracing
+- `requirements.txt` — Added scikit-learn, joblib, pandas, gradio
+
+---
+
 ## Implementation Order
 
 | # | Task | Files | Status |
@@ -251,12 +279,13 @@ Steps 8-9 depend on steps 6-7.
 | `src/labeling_tool.py` | Done | CLI for manual labeling (backup option) |
 | `src/import_celeba.py` | Run (Jess) | Download CelebA subset, auto-map attributes to emoji categories |
 | `src/build_dataset.py` | Done (run after import) | Batch feature extraction + label join → CSV |
-| `src/train.py` | Create | KNN/RF/SVM/DT comparison with stratified CV |
-| `src/evaluate.py` | Create | Plots: accuracy bars, confusion matrices |
-| `src/compose.py` | Create | Pillow face shape + OpenMoji part overlays |
-| `src/pipeline.py` | Create | End-to-end photo → emoji orchestration |
-| `src/demo.py` | Create | Gradio web UI |
-| `src/skin_tone.py` | Modify | Calibrate palette to face shape fill colors |
+| `src/train.py` | Done | KNN/RF/SVM/DT comparison with stratified CV |
+| `src/evaluate.py` | Done | Plots: accuracy bars, confusion matrices |
+| `src/compose.py` | Done | OpenMoji face + part overlays + hair system + outline recoloring |
+| `src/pipeline.py` | Done | End-to-end photo → emoji + hair detection + eye thresholds |
+| `src/demo.py` | Done | Gradio web UI |
+| `src/skin_tone.py` | Done | Calibrated Fitzpatrick palette |
+| `icons8-red-hair-96.png` | Asset | Reference for short hair polygon tracing |
 
 ## Verification
 
