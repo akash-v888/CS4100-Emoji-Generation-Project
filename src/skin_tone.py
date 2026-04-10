@@ -6,13 +6,13 @@ from typing import Iterable, Optional
 import cv2
 import numpy as np
 
-# TODO: Replace these with the exact colors used by face shape assets
+# Calibrated to Fitzpatrick scale for emoji skin tones
 DEFAULT_SKIN_TONE_PALETTE = [
-    {"id": "tone_1", "rgb": (255, 224, 189)},
-    {"id": "tone_2", "rgb": (241, 194, 125)},
-    {"id": "tone_3", "rgb": (224, 172, 105)},
-    {"id": "tone_4", "rgb": (198, 134, 66)},
-    {"id": "tone_5", "rgb": (141, 85, 36)},
+    {"id": "tone_1", "rgb": (253, 228, 200)},  # light
+    {"id": "tone_2", "rgb": (240, 199, 160)},  # medium-light
+    {"id": "tone_3", "rgb": (209, 163, 110)},  # medium
+    {"id": "tone_4", "rgb": (175, 121, 72)},   # medium-dark
+    {"id": "tone_5", "rgb": (124, 83, 47)},    # dark
 ]
 
 

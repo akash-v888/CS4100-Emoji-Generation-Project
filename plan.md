@@ -215,8 +215,8 @@ Gradio web UI:
 
 ---
 
-## Phase 7: Calibrate `skin_tone.py` palette
-Update `DEFAULT_SKIN_TONE_PALETTE` (line 10-16) to match the fill colors actually used in the face shape assets.
+## Phase 7: Calibrate `skin_tone.py` palette — **DONE**
+Recalibrated `DEFAULT_SKIN_TONE_PALETTE` to Fitzpatrick scale values. Pipeline now passes actual sampled mean RGB to the composer instead of quantized palette match, so emoji face color closely matches the person's real skin tone.
 
 ---
 
@@ -227,13 +227,13 @@ Update `DEFAULT_SKIN_TONE_PALETTE` (line 10-16) to match the fill colors actuall
 | 1 | Finish extracting assets (eyes, brows, remaining emojis) | Run `extract_openmoji_parts.py` | **DONE** (21 eyes, 4 brows, 27 mouths, 21 faces) |
 | 2 | Expand feature extraction | Modify `src/features.py` | **DONE** (16 ratio features) |
 | 3 | Build labeling tool | Create `src/labeling_tool.py` | **DONE** |
-| 4 | Import CelebA + auto-label (~500 images) | Run `src/import_celeba.py` | TODO — **Assigned: Jess** |
-| 5 | Build dataset pipeline | Create `src/build_dataset.py` + run after step 4 | **DONE** (code ready, run after step 4) |
-| 6 | Train & compare models | Create `src/train.py`, `src/evaluate.py` | TODO |
-| 7 | Build emoji composer | Create `src/compose.py` | TODO |
-| 8 | End-to-end pipeline | Create `src/pipeline.py` | TODO |
-| 9 | Gradio demo | Create `src/demo.py` | TODO |
-| 10 | Calibrate skin tone palette | Modify `src/skin_tone.py` | TODO |
+| 4 | Import CelebA + auto-label (~500 images) | Run `src/import_celeba.py` | **DONE** (Jess — 500 images) |
+| 5 | Build dataset pipeline | Create `src/build_dataset.py` | **DONE** (499 samples in features_labeled.csv) |
+| 6 | Train & compare models | Create `src/train.py`, `src/evaluate.py` | **DONE** |
+| 7 | Build emoji composer | Create `src/compose.py` | **DONE** |
+| 8 | End-to-end pipeline | Create `src/pipeline.py` | **DONE** |
+| 9 | Gradio demo | Create `src/demo.py` | **DONE** |
+| 10 | Calibrate skin tone palette | Modify `src/skin_tone.py` + `src/pipeline.py` | **DONE** |
 
 Steps 2-3 can be done in parallel with step 1 (asset extraction is manual/interactive).
 Steps 5-6 depend on steps 2-4 being complete.

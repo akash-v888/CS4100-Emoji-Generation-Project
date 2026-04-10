@@ -1,0 +1,170 @@
+{
+  "face_shape": {
+    "KNN_3": {
+      "mean_accuracy": 0.3325,
+      "std": 0.0524
+    },
+    "KNN_5": {
+      "mean_accuracy": 0.3265,
+      "std": 0.0441
+    },
+    "KNN_7": {
+      "mean_accuracy": 0.3305,
+      "std": 0.0532
+    },
+    "RandomForest": {
+      "mean_accuracy": 0.3645,
+      "std": 0.0609
+    },
+    "SVM_RBF": {
+      "mean_accuracy": 0.3706,
+      "std": 0.0471
+    },
+    "DecisionTree": {
+      "mean_accuracy": 0.2886,
+      "std": 0.0205
+    },
+    "best_model": "SVM_RBF",
+    "best_accuracy": 0.3706,
+    "classes": [
+      "heart",
+      "oblong",
+      "oval",
+      "round",
+      "square"
+    ]
+  },
+  "eye_type": {
+    "KNN_3": {
+      "mean_accuracy": 0.3948,
+      "std": 0.0286
+    },
+    "KNN_5": {
+      "mean_accuracy": 0.3728,
+      "std": 0.0181
+    },
+    "KNN_7": {
+      "mean_accuracy": 0.3727,
+      "std": 0.0225
+    },
+    "RandomForest": {
+      "mean_accuracy": 0.4127,
+      "std": 0.032
+    },
+    "SVM_RBF": {
+      "mean_accuracy": 0.4288,
+      "std": 0.0239
+    },
+    "DecisionTree": {
+      "mean_accuracy": 0.3847,
+      "std": 0.0457
+    },
+    "best_model": "SVM_RBF",
+    "best_accuracy": 0.4288,
+    "classes": [
+      "round",
+      "squint",
+      "wide"
+    ]
+  },
+  "mouth_type": {
+    "KNN_3": {
+      "mean_accuracy": 0.6033,
+      "std": 0.0292
+    },
+    "KNN_5": {
+      "mean_accuracy": 0.6193,
+      "std": 0.0239
+    },
+    "KNN_7": {
+      "mean_accuracy": 0.6433,
+      "std": 0.0327
+    },
+    "RandomForest": {
+      "mean_accuracy": 0.7175,
+      "std": 0.026
+    },
+    "SVM_RBF": {
+      "mean_accuracy": 0.6895,
+      "std": 0.0423
+    },
+    "DecisionTree": {
+      "mean_accuracy": 0.6334,
+      "std": 0.034
+    },
+    "best_model": "RandomForest",
+    "best_accuracy": 0.7175,
+    "classes": [
+      "open",
+      "smile",
+      "straight",
+      "wide"
+    ]
+  },
+  "brow_type": {
+    "KNN_3": {
+      "mean_accuracy": 0.4208,
+      "std": 0.0182
+    },
+    "KNN_5": {
+      "mean_accuracy": 0.3987,
+      "std": 0.0366
+    },
+    "KNN_7": {
+      "mean_accuracy": 0.4107,
+      "std": 0.0294
+    },
+    "RandomForest": {
+      "mean_accuracy": 0.4549,
+      "std": 0.0378
+    },
+    "SVM_RBF": {
+      "mean_accuracy": 0.4289,
+      "std": 0.0219
+    },
+    "DecisionTree": {
+      "mean_accuracy": 0.3787,
+      "std": 0.0201
+    },
+    "best_model": "RandomForest",
+    "best_accuracy": 0.4549,
+    "classes": [
+      "arched",
+      "flat",
+      "raised"
+    ]
+  },
+  "nose_type": {
+    "KNN_3": {
+      "mean_accuracy": 0.4569,
+      "std": 0.0641
+    },
+    "KNN_5": {
+      "mean_accuracy": 0.4326,
+      "std": 0.0831
+    },
+    "KNN_7": {
+      "mean_accuracy": 0.4588,
+      "std": 0.0485
+    },
+    "RandomForest": {
+      "mean_accuracy": 0.475,
+      "std": 0.0219
+    },
+    "SVM_RBF": {
+      "mean_accuracy": 0.491,
+      "std": 0.0233
+    },
+    "DecisionTree": {
+      "mean_accuracy": 0.4289,
+      "std": 0.0564
+    },
+    "best_model": "SVM_RBF",
+    "best_accuracy": 0.491,
+    "classes": [
+      "medium",
+      "pointed",
+      "wide"
+    ]
+  }
+}
